@@ -95,3 +95,8 @@ def reset_list_items(nested_list):
   return zeros_result
 
 print reset_list_items(list_of_lists)
+
+
+
+
+
