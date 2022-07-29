@@ -1,10 +1,9 @@
-from email import message
 import requests
-import variableFile 
+import key_file 
 import inquirer
 
-siteId = variableFile.MY_JW_SITE_ID
-apiV2Key = variableFile.MY_V2_API_KEY
+siteId = key_file.MY_JW_SITE_ID
+apiV2Key = key_file.MY_V2_API_KEY
 
 category = [
     inquirer.List(
@@ -20,6 +19,9 @@ mediaTitle = input()
 
 choice = inquirer.prompt(category)
 mediaCategory = choice.get('option')
+
+print('Enter the full file path of the media to upload')
+file_path = input()
 
 url = f'https://api.jwplayer.com/v2/sites/{siteId}/media'
 payload = {
@@ -37,8 +39,11 @@ headers = {
     "Authorization": f'{apiV2Key}'
 }
 
-# response = requests.post(url, json=payload, headers=headers)
+response = requests.post(url, json=payload, headers=headers)
 
-print(mediaTitle)
-print(mediaCategory)
-# print(response.text)
+upload_url = response.json()['upload_link']
+media_id = response.json()['id']
+
+requests.put(url=upload_url, data=open(file_path, 'r').read())
+
+print(media_id)
