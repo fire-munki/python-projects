@@ -1,20 +1,25 @@
+from email import message
 import requests
 import variableFile 
+import inquirer
 
 siteId = variableFile.MY_JW_SITE_ID
 apiV2Key = variableFile.MY_V2_API_KEY
 
-category = ['0 Automotive','1 Books and Literature','2 Business and Finance','3 Careers','4 Education','5 Events and Attractions','6 Family and Relationships','7 Fine Art','8 Food &amp; Drink','9 Healthy Living','10 Hobbies &amp; Interests','11 Home &amp; Garden','12 Medical Health','13 Movies','14 Music and Audio','15 News and Politics','16 Personal Finance','17 Pets','18 Pop Culture','19 Real Estate','20 Religion &amp; Spirituality','21 Science','22 Shopping','23 Sports','24 Style &amp; Fashion','25 Technology &amp; Computing','26 Television','27 Travel','28 Video Gaming']
+category = [
+    inquirer.List(
+        'option', 
+        message='Select the media category and press return', 
+        choices=['Automotive','Books and Literature','Business and Finance','Careers','Education','Events and Attractions','Family and Relationships','Fine Art','Food and Drink','Healthy Living','Hobbies and Interests','Home and Garden','Medical Health','Movies','Music and Audio','News and Politics','Personal Finance','Pets','Pop Culture','Real Estate','Religion and Spirituality','Science','Shopping','Sports','Style and Fashion','Technology and Computing','Television','Travel','Video Gaming'],
+        carousel=True
+    ),
+]
 
 print('Enter the media title and press return')
 mediaTitle = input()
 
-for i in category:
-    print(i)
-
-print('Enter the media category number and press return')
-mediaCategory = category[int(input())]
-
+choice = inquirer.prompt(category)
+mediaCategory = choice.get('option')
 
 url = f'https://api.jwplayer.com/v2/sites/{siteId}/media'
 payload = {
@@ -32,9 +37,8 @@ headers = {
     "Authorization": f'{apiV2Key}'
 }
 
-response = requests.post(url, json=payload, headers=headers)
+# response = requests.post(url, json=payload, headers=headers)
 
-# print(mediaTitle)
-# print(mediaCategory)
-# print(apiV2Key)
-print(response.text)
+print(mediaTitle)
+print(mediaCategory)
+# print(response.text)
