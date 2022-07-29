@@ -1,6 +1,7 @@
 import requests
 import key_file 
 import inquirer
+import time
 
 siteId = key_file.MY_JW_SITE_ID
 apiV2Key = key_file.MY_V2_API_KEY
@@ -47,15 +48,19 @@ mediaId = response.json()['id']
 requests.put(url=uploadUrl, data=open(file_path, 'rb').read())
 
 
-url = f'https://api.jwplayer.com/v2/sites/{siteId}/media/{mediaId}'
+url2 = f'https://api.jwplayer.com/v2/sites/{siteId}/media/{mediaId}'
 
 headers = {
     "Accept": "application/json",
     "Authorization": apiV2Key
 }
 
-response = requests.get(url, headers=headers)
+status = ''
 
-status = response.json()['status']
+while status != 'ready':
+    response = requests.get(url2, headers=headers)
+    status = response.json()['status']
+    print('The media is in a {} state'.format(status))
+    time.sleep(30)
 
-print(status)
+print('The media is now {}'.format(status))
