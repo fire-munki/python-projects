@@ -14,14 +14,14 @@ category = [
     ),
 ]
 
+print('Enter the full file path of the media to upload')
+file_path = input()
+
 print('Enter the media title and press return')
 mediaTitle = input()
 
 choice = inquirer.prompt(category)
 mediaCategory = choice.get('option')
-
-print('Enter the full file path of the media to upload')
-file_path = input()
 
 url = f'https://api.jwplayer.com/v2/sites/{siteId}/media'
 payload = {
@@ -41,9 +41,21 @@ headers = {
 
 response = requests.post(url, json=payload, headers=headers)
 
-upload_url = response.json()['upload_link']
-media_id = response.json()['id']
+uploadUrl = response.json()['upload_link']
+mediaId = response.json()['id']
 
-requests.put(url=upload_url, data=open(file_path, 'r').read())
+requests.put(url=uploadUrl, data=open(file_path, 'rb').read())
 
-print(media_id)
+
+url = f'https://api.jwplayer.com/v2/sites/{siteId}/media/{mediaId}'
+
+headers = {
+    "Accept": "application/json",
+    "Authorization": apiV2Key
+}
+
+response = requests.get(url, headers=headers)
+
+status = response.json()['status']
+
+print(status)
