@@ -1,6 +1,7 @@
 import requests
 import key_file 
 import inquirer
+import os
 import time
 
 siteId = key_file.MY_JW_SITE_ID
@@ -15,8 +16,26 @@ category = [
     ),
 ]
 
-print('Enter the full file path of the media to upload')
-file_path = input()
+print('Please enter the folder path containing video files')
+
+filePath = input()
+
+dirList = os.listdir(filePath)
+
+mediaChoice = [
+    inquirer.List(
+        'option', 
+        message = 'Select the media to upload', 
+        choices = dirList,
+        carousel = True
+    ),
+]
+
+file = inquirer.prompt(mediaChoice)
+
+media = file.get('option')
+
+meidaUrl = f'{filePath}{media}'
 
 print('Enter the media title and press return')
 mediaTitle = input()
@@ -45,7 +64,7 @@ response = requests.post(url, json=payload, headers=headers)
 uploadUrl = response.json()['upload_link']
 mediaId = response.json()['id']
 
-requests.put(url=uploadUrl, data=open(file_path, 'rb').read())
+requests.put(url=uploadUrl, data=open(meidaUrl, 'rb').read())
 
 
 url2 = f'https://api.jwplayer.com/v2/sites/{siteId}/media/{mediaId}'
