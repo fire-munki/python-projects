@@ -1,8 +1,8 @@
 import requests
 import key_file 
 import inquirer
-import os
-import time
+from os import listdir
+from time import sleep
 
 siteId = key_file.MY_JW_SITE_ID
 apiV2Key = key_file.MY_V2_API_KEY
@@ -20,7 +20,7 @@ print('Please enter the folder path containing video files')
 
 filePath = input()
 
-dirList = os.listdir(filePath)
+dirList = listdir(filePath)
 
 mediaChoice = [
     inquirer.List(
@@ -79,7 +79,7 @@ status = ''
 while status != 'ready':
     response = requests.get(url2, headers=headers)
     status = response.json()['status']
-    print('The media is in a {} state'.format(status))
-    time.sleep(30)
+    print(f'The media is in a {status} state')
+    sleep(30)
 
-print('The media is now {}'.format(status))
+print(f'The media is now {status}')
