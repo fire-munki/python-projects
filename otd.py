@@ -1,8 +1,10 @@
 from datetime  import datetime
+from unittest import result
 from urllib import response
 import key_file
 import inquirer
 import requests
+import json
 
 nasaKey = key_file.MY_NASA_API_KEY
 
@@ -22,9 +24,7 @@ monthList = [
     ),
 ]
 
-month = inquirer.prompt(monthList)
-
-mon = month.get('option')
+mon = (inquirer.prompt(monthList)).get('option')
 
 dayList = [
     inquirer.List(
@@ -35,13 +35,17 @@ dayList = [
     ),
 ]
 
-day = inquirer.prompt(dayList)
-
-day = str(day.get('option'))
-
-day = day.rjust(2, '0')
+day = (str((inquirer.prompt(dayList)).get('option'))).rjust(2, '0')
 
 date = str(f'{year}-{mon}-{day}')
+
+#validate entered date by returning true if returns value, a Feb 30 won't return any value and thus exit
+try:
+    dateTest = bool(datetime.strptime(f'{date}', '%Y-%b-%d').date())
+except ValueError:
+    dateTest = False
+    print('Date entered isn\'t valid')
+    exit()
 
 parsedDate = datetime.strptime(f'{date}', '%Y-%b-%d').date()
 
@@ -51,6 +55,10 @@ headers = {
     'api_key': nasaKey
 }
 
-results = requests.get(url, headers)
+results = (requests.get(url, headers)).json()
+# print(results)
+# print(type(results))
+# print(results.keys())
 
-print(results.text)
+for i in results:
+    print(i['kilometers'])
