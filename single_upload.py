@@ -1,5 +1,5 @@
 import requests
-import key_file 
+import key_file as key_file 
 import inquirer
 from os import listdir
 from time import sleep
@@ -78,6 +78,9 @@ choice = inquirer.prompt(category)
 
 mediaCategory = choice.get('option')
 
+print('Enter the tag for the media:')
+mediaTag = input()
+
 url = f'https://api.jwplayer.com/v2/sites/{siteId}/media'
 payload = {
     'upload': {
@@ -85,6 +88,7 @@ payload = {
     },
     'metadata': {
         'title': f'{mediaTitle}',
+        'tags': [f'{mediaTag}'],
         'category': f'{mediaCategory}'
     }
 }
@@ -115,6 +119,4 @@ while status != 'ready':
     response = requests.get(url2, headers=headers)
     status = response.json()['status']
     print(f'The media is in a {status} state')
-    sleep(30)
-
-print(f'The media is now {status}')
+    sleep(15)
