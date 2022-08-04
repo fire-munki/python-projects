@@ -1,5 +1,5 @@
 from datetime  import datetime
-from unittest import result
+from dis import dis
 from urllib import response
 import key_file
 import inquirer
@@ -56,9 +56,12 @@ headers = {
 }
 
 results = (requests.get(url, headers)).json()
-# print(results)
-# print(type(results))
-# print(results.keys())
 
-for i in results:
-    print(i['kilometers'])
+miss_distance_data = []
+
+for i in range(0, len(results['near_earth_objects'][f'{parsedDate}'])):
+	miss_distance_data.append(results['near_earth_objects'][f'{parsedDate}'][i]['close_approach_data'][0]['miss_distance']['kilometers'])
+
+distance = min(miss_distance_data)
+
+print(f'You were {distance}km away from a near earth object')
