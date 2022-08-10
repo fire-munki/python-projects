@@ -9,7 +9,7 @@ print('What is your year of birth?')
 year = int(input())
 
 if year < 1900:
-    print('Records aren\'t available this far back.')
+    print("Records aren't available this far back.")
     exit()
 
 monthList = [
@@ -41,7 +41,7 @@ try:
     dateTest = bool(datetime.strptime(f'{date}', '%Y-%b-%d').date())
 except ValueError:
     dateTest = False
-    print('Date entered isn\'t valid')
+    print("Date entered isn't valid.")
     exit()
 
 parsedDate = datetime.strptime(f'{date}', '%Y-%b-%d').date()
