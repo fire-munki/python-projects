@@ -24,7 +24,7 @@ monthList = [
     ),
 ]
 
-mon = (inquirer.prompt(monthList)).get('option')
+month = (inquirer.prompt(monthList)).get('option')
 
 dayList = [
     inquirer.List(
@@ -37,7 +37,7 @@ dayList = [
 
 day = (str((inquirer.prompt(dayList)).get('option'))).rjust(2, '0')
 
-date = str(f'{year}-{mon}-{day}')
+date = str(f'{year}-{month}-{day}')
 
 #validate entered date by returning true if returns value, a Feb 30 won't return any value and thus exit
 try:
