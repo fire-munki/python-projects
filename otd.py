@@ -9,7 +9,7 @@ print('What is your year of birth?')
 year = int(input())
 
 if year < 1900:
-    print('Records aren\'t available this far back'. )
+    print('Records aren\'t available this far back.')
     exit()
 
 monthList = [
