@@ -1,10 +1,7 @@
 from datetime  import datetime
-from dis import dis
-from urllib import response
 import key_file
 import inquirer
 import requests
-import json
 
 nasaKey = key_file.MY_NASA_API_KEY
 
