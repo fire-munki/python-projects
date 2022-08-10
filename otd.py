@@ -5,17 +5,17 @@ import requests
 
 nasaKey = key_file.MY_NASA_API_KEY
 
-print('What is your year of birth')
+print('What is your year of birth?')
 year = int(input())
 
 if year < 1900:
-    print('Records aren\'t avaiable this far back' )
+    print('Records aren\'t available this far back'. )
     exit()
 
 monthList = [
     inquirer.List(
         'option', 
-        message = 'What is your month of birth', 
+        message = 'What is your month of birth?', 
         choices = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
         carousel = True
     ),
@@ -26,7 +26,7 @@ mon = (inquirer.prompt(monthList)).get('option')
 dayList = [
     inquirer.List(
         'option', 
-        message = 'What is your day of birth', 
+        message = 'What is your day of birth?', 
         choices = list(range(1,32)),
         carousel = True
     ),
@@ -61,4 +61,4 @@ for i in range(0, len(results['near_earth_objects'][f'{parsedDate}'])):
 
 distance = min(miss_distance_data)
 
-print(f'You were {distance}km away from a near earth object')
+print(f'You were {distance}km away from a near earth object!')
