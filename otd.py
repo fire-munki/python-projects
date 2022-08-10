@@ -4,6 +4,9 @@ import inquirer
 import requests
 
 nasaKey = key_file.MY_NASA_API_KEY
+headers = {
+    'api_key': nasaKey
+}
 
 print('What is your year of birth?')
 year = int(input())
@@ -47,10 +50,6 @@ except ValueError:
 parsedDate = datetime.strptime(f'{date}', '%Y-%b-%d').date()
 
 url = f'https://api.nasa.gov/neo/rest/v1/feed?start_date={parsedDate}&end_date={parsedDate}'
-
-headers = {
-    'api_key': nasaKey
-}
 
 results = (requests.get(url, headers)).json()
 
