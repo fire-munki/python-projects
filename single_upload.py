@@ -22,8 +22,6 @@ locationChoice = inquirer.prompt(location)
 
 locationChoiceAnswer = locationChoice.get("option")
 
-# if locationChoiceAnswer == "Yes":
-#     filePath = key_file.VIDEO_FILE_PATH
 if locationChoiceAnswer == "No":
     print("Please enter the folder path:")
     filePath = input()
