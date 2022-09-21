@@ -3,6 +3,7 @@ import key_file as key_file
 import inquirer
 from os import listdir
 from time import sleep
+import shutil
 
 siteId = key_file.MY_JW_SITE_ID
 apiV2Key = key_file.MY_V2_API_KEY
@@ -30,17 +31,7 @@ dirList = listdir(filePath)
 
 videoList = []
 for fileName in dirList:
-    if fileName.endswith(".mp4"):
-        videoList.append(fileName)
-    if fileName.endswith(".m4a"):
-        videoList.append(fileName)
-    if fileName.endswith(".3gp"):
-        videoList.append(fileName)
-    if fileName.endswith(".avi"):
-        videoList.append(fileName)
-    if fileName.endswith(".mov"):
-        videoList.append(fileName)
-    if fileName.endswith(".wmv"):
+    if fileName[-3:] in ["mp4", "m4a", "3gp", "avi", "mov", "wmv"]:
         videoList.append(fileName)
 
 if videoList == []:
@@ -62,21 +53,10 @@ media = file.get("option")
 
 meidaUrl = f"{filePath}{media}"
 
-print("Enter the media title and press return")
+uploadedLocation = f"{filePath}uploaded/{media}"
+
+print("Enter the media title:")
 mediaTitle = input()
-
-category = [
-    inquirer.List(
-        "option", 
-        message="Select the media category and press return", 
-        choices=["Automotive","Books and Literature","Business and Finance","Careers","Education","Events and Attractions","Family and Relationships","Fine Art","Food and Drink","Healthy Living","Hobbies and Interests","Home and Garden","Medical Health","Movies","Music and Audio","News and Politics","Personal Finance","Pets","Pop Culture","Real Estate","Religion and Spirituality","Science","Shopping","Sports","Style and Fashion","Technology and Computing","Television","Travel","Video Gaming"],
-        carousel=True
-    ),
-]
-
-choice = inquirer.prompt(category)
-
-mediaCategory = choice.get("option")
 
 print("Enter the tag for the media:")
 mediaTag = input()
@@ -88,8 +68,7 @@ payload = {
     },
     "metadata": {
         "title": f"{mediaTitle}",
-        "tags": [f"{mediaTag}"],
-        "category": f"{mediaCategory}"
+        "tags": [f"{mediaTag}"]
     }
 }
 headers = {
@@ -118,5 +97,9 @@ status = ""
 while status != "ready":
     response = requests.get(url2, headers=headers)
     status = response.json()["status"]
-    print(f"The media is in a {status} state")
-    sleep(15)
+    print(f"The media is in a {status} status")
+    sleep(5)
+
+shutil.move(meidaUrl, uploadedLocation)
+
+print("You file has been upload to your JW Dashboard, and the orginal moved to the uploaded folder.")
